@@ -1,0 +1,5 @@
+auth/*
+!auth/.gitkeep
+data/*
+!data/.gitkeep
+/.idea
