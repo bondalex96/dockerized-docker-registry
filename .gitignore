@@ -3,3 +3,4 @@ auth/*
 data/*
 !data/.gitkeep
 /.idea
+.env
