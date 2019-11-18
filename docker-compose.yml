@@ -12,9 +12,23 @@ services:
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
       AUTH_USER: ${AUTH_USER}
       AUTH_PASSWORD: ${AUTH_PASSWORD}
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/live/${DOMAIN_NAME}/fullchain.pem
+      REGISTRY_HTTP_TLS_KEY: /certs/live/${DOMAIN_NAME}/privkey.pem
     volumes:
       - ./auth:/auth
       - ./data:/data
       - ./scripts:/scripts
+      - ./letsencrypt/:/certs
     restart: always
     user: 1000:1000
+
+  letsencrypt:
+    build:
+      context: .
+      dockerfile: lestsencrypt.docker
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt
+    user: 1000:1000
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      EMAIL: ${EMAIL}
