@@ -14,3 +14,5 @@
 10. sudo chown -R ${USER} letsencrypt/
 11. sudo chgrp -R ${USER} letsencrypt/
 12. docker-compose up -d
+
+При обновлении следует удалить папку letsencrypt и проделать все действия по новой.
