@@ -1,5 +1,0 @@
-FROM debian:jessie
-
-RUN apt-get update && apt-get install -y apt-utils git
-RUN git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
-RUN /opt/letsencrypt/letsencrypt-auto certonly -d ${DOMAIN_NAME} --non-interactive --agree-tos -m ${EMAIL} --standalone
