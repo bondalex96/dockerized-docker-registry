@@ -6,15 +6,6 @@ help:
 include .env
 export
 
-change-password: ## Change password
-	docker-compose run --rm registry /scripts/change-password.sh
-
-connect-registry: ## Connect registry container
-	docker-compose exec registry sh
-
-generate-htpasswd: ## Generate httpasswd
-	docker run --rm httpd sh -c "htpasswd -Bbn ${AUTH_USER} ${AUTH_PASSWORD}" > htpasswd
-
 deploy: ## Deploy
 	ssh -o StrictHostKeyChecking=no ${SSH_HOST} 'mkdir -p registry'
 	ssh -o StrictHostKeyChecking=no ${SSH_HOST} 'rm -rf registry/docker-compose.yml registry/.env'
