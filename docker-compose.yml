@@ -1,15 +1,16 @@
-version: '2'
+version: '3.7'
 
 services:
   proxy:
     image: jwilder/nginx-proxy
+    container_name: nginx-proxy
     restart: always
     ports:
       - 80:80
       - 443:443
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - /usr/share/nginx/html
+      - html:/usr/share/nginx/html
       - hosts:/etc/nginx/vhost.d
       - certs:/etc/nginx/certs:ro
 
@@ -19,10 +20,12 @@ services:
     restart: always
     depends_on:
       - proxy
-    volumes_from:
-      - proxy
+    environment:
+      NGINX_PROXY_CONTAINER: nginx-proxy
     volumes:
       - certs:/etc/nginx/certs:rw
+      - hosts:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   registry:
@@ -46,7 +49,9 @@ services:
       - ./htpasswd:/auth/htpasswd
     restart: always
 
+
 volumes:
   registry:
   certs:
   hosts:
+  html:
