@@ -1,0 +1,17 @@
+- hosts: default
+  become: yes
+  remote_user: root
+  roles:
+    - add-swap
+    - install-gnupg2
+    - role: geerlingguy.docker
+      vars:
+        ansible_os_family: 'Debian'
+        docker_edition: 'ce'
+        docker_group: 'docker'
+        docker_compose_version: '1.25.0'
+    - docker-prune-periodic
+    - role: ssh-user
+      vars:
+        user_name: devops
+        user_groups: docker
