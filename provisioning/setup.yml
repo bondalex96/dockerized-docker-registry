@@ -2,6 +2,8 @@
   become: yes
   remote_user: root
   roles:
+    - add-swap
+    - install-gnupg2
     - role: geerlingguy.docker
       vars:
         ansible_os_family: 'Debian'
@@ -9,5 +11,6 @@
         docker_group: 'docker'
         docker_compose_version: '1.25.0'
     - role: ssh-user
-    - role: add-swap
-
+      vars:
+        user_name: devops
+        user_groups: docker

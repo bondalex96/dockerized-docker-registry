@@ -30,8 +30,6 @@ services:
 
   registry:
     image: registry:2
-    ports:
-      - 5000:5000
     environment:
       VIRTUAL_HOST: ${DOMAIN_NAME}
       VIRTUAL_PORT: 5000
@@ -49,9 +47,30 @@ services:
       - ./htpasswd:/auth/htpasswd
     restart: always
 
+  cache-registry:
+    image: registry:2
+    restart: always
+    environment:
+      REGISTRY_PROXY_REMOTEURL: https://registry-1.docker.io
+      REGISTRY_STORAGE_DELETE_ENABLED: 1
+      VIRTUAL_HOST: ${CACHE_DOMAIN_NAME}
+      VIRTUAL_PORT: 5000
+      VIRTUAL_PROTO: https
+      LETSENCRYPT_HOST: ${CACHE_DOMAIN_NAME}
+      LETSENCRYPT_EMAIL: ${EMAIL}
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/${CACHE_DOMAIN_NAME}.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/${CACHE_DOMAIN_NAME}.key
+    volumes:
+      - cache-registry:/var/lib/registry
+      - certs:/certs
+      - ./htpasswd:/auth/htpasswd
 
 volumes:
   registry:
+  cache-registry:
   certs:
   hosts:
   html:

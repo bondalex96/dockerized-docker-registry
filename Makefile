@@ -1,8 +1,3 @@
-.DEFAULT_GOAL := help
-help:
-	@grep -E '^[a-zA-Z-]+:.*?## .*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-17s\033[0m %s\n", $$1, $$2}'
-.PHONY: help
-
 include .env
 export
 
@@ -13,4 +8,5 @@ deploy: ## Deploy
 	ssh -o StrictHostKeyChecking=no ${SSH_HOST} 'docker run --rm httpd sh -c "htpasswd -Bbn ${AUTH_USER} ${AUTH_PASSWORD}" > registry/htpasswd'
 	ssh -o StrictHostKeyChecking=no ${SSH_HOST} 'echo "DOMAIN_NAME=${DOMAIN_NAME}" >> registry/.env'
 	ssh -o StrictHostKeyChecking=no ${SSH_HOST} 'echo "EMAIL=${EMAIL}" >> registry/.env'
+	ssh -o StrictHostKeyChecking=no ${SSH_HOST} 'echo "CACHE_DOMAIN_NAME=${CACHE_DOMAIN_NAME}" >> registry/.env'
 	ssh -o StrictHostKeyChecking=no ${SSH_HOST} 'cd registry && docker-compose up --build --remove-orphans -d'

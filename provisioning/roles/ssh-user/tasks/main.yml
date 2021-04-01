@@ -3,8 +3,7 @@
       name: "{{ user_name }}"
       shell: /bin/bash
       password: '!'
-      groups:
-        - docker
+      groups: "{{ user_groups }}"
       state: present
 
 - name: Add {{ user_name }} user to the sudoers
