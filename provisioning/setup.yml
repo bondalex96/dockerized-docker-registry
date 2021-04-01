@@ -10,6 +10,7 @@
         docker_edition: 'ce'
         docker_group: 'docker'
         docker_compose_version: '1.25.0'
+    - docker-prune-periodic
     - role: ssh-user
       vars:
         user_name: devops
